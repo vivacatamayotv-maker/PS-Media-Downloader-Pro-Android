@@ -187,13 +187,17 @@ class MainActivity : Activity() {
                     )
                     request.addOption("--merge-output-format", "mp4")
                 }
-                YoutubeDL.getInstance().execute(request, { value, eta ->
+                YoutubeDL.getInstance().execute(request, id) { value, eta, line ->
                     runOnUiThread {
                         progress.progress = value.toInt().coerceIn(0, 100)
                         percent.text = String.format(Locale.US, "%.1f%%", value)
-                        status.text = "Descargando · tiempo restante: ${eta} s"
+                        status.text = if (eta >= 0) {
+                            "Descargando · tiempo restante: ${eta} s"
+                        } else {
+                            line.take(160)
+                        }
                     }
-                }, id)
+                }
                 if (cancelled) {
                     message("Descarga cancelada.")
                     return@execute
