@@ -1,17 +1,20 @@
-# PS Media Downloader Pro · Android
+# PS Media Downloader Pro · Android (Kotlin)
 
-Proyecto beta para Android 8.0+; creado para Pepe Simancas Capa.
+Aplicación Android beta para Pepe Simancas Capa. Código principal **100 % Kotlin**, sin actividad Java duplicada.
 
-## Compilación
-Actions → Compilar APK Android → Run workflow, o un push a main.
-Cuando el flujo termine, descarga el artefacto `PS-Media-Downloader-Android`.
-El APK será **debug** (firmado para pruebas), no una versión de publicación.
+## Estado del proyecto
+- Kotlin 2.0.21 + Android Gradle Plugin 8.7.3
+- Java 17 usado **solo como JDK de compilación** (Kotlin compila a bytecode de JVM)
+- Interfaz de prueba Android con descarga MP4 y extracción MP3 mediante yt-dlp-android y FFmpeg
+- Barra de progreso, cancelación y guardado en Descargas/PS Media Downloader
+- Compatibilidad real con plataformas y dispositivos **pendiente de validación**
+- Marca tipográfica provisional. El archivo PNG oficial aún no está incorporado como recurso Android.
 
-## Funciones
-Analizar enlaces compatibles, descargar MP4 y extraer MP3, progreso, cancelar, guardar en Descargas/PS Media Downloader.
+## Compilar APK de prueba
+En GitHub → Acciones → Compilar APK Android, abre la última ejecución.
+Si termina correctamente, en Resumen → Artefactos estará **PS-Media-Downloader-Android**.
+Dentro del ZIP estará `app-debug.apk`.
 
-## Estado
-Esta es una beta. No se ha realizado prueba física en Android. La disponibilidad de descarga depende de permisos y compatibilidad de las plataformas. Usa únicamente contenidos propios o autorizados.
+El paso SDK Android falló en una ejecución anterior. Se ajustó el flujo para usar el SDK preinstalado, pero no se ha verificado todavía el resultado de esta nueva compilación.
 
-## Marca
-La cabecera incluye el nombre Pepe Simancas Capa. El PNG oficial se incorporará como recurso binario cuando esté disponible la transferencia de archivos al repositorio.
+Solo para contenido propio o descargas autorizadas. Ninguna opción evita restricciones de acceso o DRM.
