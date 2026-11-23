@@ -32,8 +32,29 @@ jobs:
           gradle --version
           echo "SDK: ${ANDROID_HOME:-${ANDROID_SDK_ROOT:-no-configurado}}"
           sdkmanager --list_installed | head -50
-      - name: Compilar APK Kotlin
-        run: gradle :app:assembleDebug --no-daemon --stacktrace --warning-mode all
+      - name: Compilar APK Kotlin y registrar errores
+        id: build
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle :app:assembleDebug --no-daemon --console=plain --stacktrace --warning-mode all 2>&1 | tee gradle-build.log
+      - name: Resumen de errores para diagnóstico
+        if: failure()
+        shell: bash
+        run: |
+          echo '## Error de compilación Android' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Busca en este resumen el primer mensaje de Kotlin o Gradle.' >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~text' >> "$GITHUB_STEP_SUMMARY"
+          (grep -nEi '^e:|(^|[[:space:]])error:|Unresolved reference|Compilation error|FAILURE:|What went wrong:|Could not (resolve|find)|Execution failed for task' gradle-build.log | head -45 || true) | tee errores-resumen.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+      - name: Guardar registro de compilación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PS-Android-Registro-Compilacion
+          path: gradle-build.log
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Publicar APK de prueba
         uses: actions/upload-artifact@v4
         with:
