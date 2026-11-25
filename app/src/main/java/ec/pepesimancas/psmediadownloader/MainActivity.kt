@@ -183,7 +183,7 @@ class MainActivity : Activity() {
                     val filter = maxHeight?.let { "[height<=${it}]" } ?: ""
                     request.addOption(
                         "-f",
-                        "best[ext=mp4]${filter}/bestvideo[ext=mp4]${filter}+bestaudio[ext=m4a]/best${filter}/best"
+                        "bestvideo[ext=mp4]${filter}+bestaudio[ext=m4a]/best[ext=mp4]${filter}"
                     )
                     request.addOption("--merge-output-format", "mp4")
                 }
@@ -207,7 +207,16 @@ class MainActivity : Activity() {
                         !file.name.endsWith(".part") && !file.name.endsWith(".ytdl")
                 } ?: emptyArray()
                 if (outputs.isEmpty()) throw IOException("No se encontró archivo final.")
-                outputs.forEach { file -> saveFile(file, if (audio) "audio/mpeg" else "video/mp4") }
+                outputs.forEach { file ->
+                    val extension = file.extension.lowercase(Locale.US)
+                    if (audio && extension != "mp3") {
+                        throw IOException("La conversión no produjo un MP3 válido.")
+                    }
+                    if (!audio && extension != "mp4") {
+                        throw IOException("La descarga no produjo un MP4 válido.")
+                    }
+                    saveFile(file, if (audio) "audio/mpeg" else "video/mp4")
+                }
                 message("DESCARGA COMPLETADA · ${outputs.size} archivo(s) guardado(s).")
                 runOnUiThread { progress.progress = 100; percent.text = "100%" }
             } catch (ex: Exception) {
