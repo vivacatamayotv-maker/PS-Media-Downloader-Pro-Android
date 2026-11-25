@@ -12,9 +12,9 @@ Aplicación Android beta para Pepe Simancas Capa. Código principal **100 % Kotl
 
 ## Compilar APK de prueba
 En GitHub → Acciones → Compilar APK Android, abre la última ejecución.
-Si termina correctamente, en Resumen → Artefactos estará **PS-Media-Downloader-Android**.
+Si termina correctamente, en Resumen → Artefactos estará **PS-Media-Downloader-Pro-Android-APK**.
 Dentro del ZIP estará `app-debug.apk`.
 
-El paso SDK Android falló en una ejecución anterior. Se ajustó el flujo para usar el SDK preinstalado, pero no se ha verificado todavía el resultado de esta nueva compilación.
+El flujo usa GitHub Actions y Android SDK 35. Hasta comprobar una ejecución verde, no se considera disponible un APK instalado y probado. Si falla, descarga el artefacto **PS-Android-Registro-Compilacion** o revisa el resumen de errores.
 
 Solo para contenido propio o descargas autorizadas. Ninguna opción evita restricciones de acceso o DRM.
